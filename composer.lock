@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2806579726e39eb3623eb82a584e9c01",
+    "content-hash": "98c9b6aeed682e9a0a26389f16323564",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
