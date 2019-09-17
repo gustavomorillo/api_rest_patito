@@ -19,7 +19,7 @@ class ChangePasswords extends Command
      *
      * @var string
      */
-    protected $signature = 'change-paswords:change';
+    protected $signature = 'change-paswords';
 
     /**
      * The console command description.
@@ -50,7 +50,7 @@ class ChangePasswords extends Command
                 'password' => 6543210
             );
 
-            Mail::to('gustavomorillo@gmail.com')->send(new SendEmail($data));
+            Mail::to('gustavomorillo@gmail.com')->queue(new SendEmail($data));
         
             $this->info("Changed password");
         
