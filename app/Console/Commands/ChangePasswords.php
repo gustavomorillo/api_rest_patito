@@ -2,10 +2,15 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+
 use Auth;
 use App\Distribuidor;
+use App\Mail\SendEmail;
+use Illuminate\Http\Request;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+
 
 class ChangePasswords extends Command
 {
@@ -40,17 +45,14 @@ class ChangePasswords extends Command
      */
     public function handle()
     {
-        $distribuidores = Distribuidor::all();
-
-        foreach ($distribuidores as $distribuidor){
-
-            $distribuidor = Distribuidor::find($distribuidor['id']);
-            $newPassword = 654321;
-            $distribuidor->password = Hash::make($newPassword);
-            $distribuidor->save();
-            $this->info("Changed password " . $distribuidor['email']);
-        }
-        
        
+            $data = array(
+                'password' => 6543210
+            );
+
+            Mail::to('gustavomorillo@gmail.com')->send(new SendEmail($data));
+        
+            $this->info("Changed password");
+        
     }
 }
