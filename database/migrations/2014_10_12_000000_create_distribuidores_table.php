@@ -15,7 +15,7 @@ class CreateDistribuidoresTable extends Migration
     {
         Schema::create('distribuidores', function (Blueprint $table) {
 
-            $table->string('name');
+            $table->string('login');
             $table->unique('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('api_token', 60)->unique();
