@@ -15,7 +15,7 @@ class Tarea extends Eloquent implements Authenticatable
     protected $connection = 'mongodb';
 
     protected $fillable = [
-        'nombre', 'direccion', 'latitud', 'longitud','mercancia','estado', 'user_id'
+        'nombre', 'direccion', 'latitud', 'longitud','mercancia','estado', 'distribuidor_id'
     ];
 
 }

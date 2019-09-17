@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Tarea;
+use Validator;
 
 class TareaController extends Controller
 {
@@ -15,7 +16,8 @@ class TareaController extends Controller
      */
     public function index()
     {
-       
+        $tareas = Tarea::all();
+        return response()->json($tareas);
     }
 
     /**
@@ -36,12 +38,29 @@ class TareaController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre = $request->input('nombre');
-
-        return Tarea::create([
-            'nombre' => $nombre,
-            'user_id' => Auth::guard('api')->id()
+        
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
         ]);
+
+        if($validator->fails()){
+            $response = array('response' =>$validator->messages(), 'success' => false);
+            return $response;
+        } else {
+            $tarea = new Tarea;
+            $tarea->nombre = $request->input('nombre');
+            $tarea->distribuidor_id = Auth::guard('api')->id();
+            $tarea->save();
+
+            return response()->json($tarea);
+        }
+
+        // $nombre = $request->input('nombre');
+
+        // return Tarea::create([
+        //     'nombre' => $nombre,
+        //     'distribuidor_id' => Auth::guard('api')->id()
+        // ]);
     }
 
     /**

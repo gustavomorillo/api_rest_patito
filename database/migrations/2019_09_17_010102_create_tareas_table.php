@@ -14,14 +14,14 @@ class CreateTareasTable extends Migration
     public function up()
     {
         Schema::create('tareas', function (Blueprint $table) {   
-            $table->integer('user_id');
-            // $table->date('fecha');
+            $table->integer('distribuidor_id');
+            $table->date('fecha');
             $table->string('nombre');
-            // $table->string('direccion');
-            // $table->integer('latitud');
-            // $table->integer('longitud');
-            // $table->string('mercancia');
-            // $table->string('estado');
+            $table->string('direccion');
+            $table->integer('latitud');
+            $table->integer('longitud');
+            $table->string('mercancia');
+            $table->string('estado');
             $table->timestamps();
         });
     }
