@@ -55,14 +55,14 @@ class TareaController extends Controller
             return response()->json($tarea);
         }
 
-        // $nombre = $request->input('nombre');
+       
+    }
+ // $nombre = $request->input('nombre');
 
         // return Tarea::create([
         //     'nombre' => $nombre,
         //     'distribuidor_id' => Auth::guard('api')->id()
         // ]);
-    }
-
     /**
      * Display the specified resource.
      *
@@ -98,7 +98,23 @@ class TareaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
+        ]);
+
+        if($validator->fails()){
+            $response = array('response' =>$validator->messages(), 'success' => false);
+            return $response;
+        } else {
+           
+            $tarea = Tarea::find($id);
+            $tarea->nombre = $request->input('nombre');
+            $tarea->distribuidor_id = Auth::guard('api')->id();
+            $tarea->save();
+
+            return response()->json($tarea);
+        }
+
     }
 
     /**
@@ -109,6 +125,9 @@ class TareaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tarea = Tarea::find($id);
+        $tarea->delete();
+        $response = array('response' => 'Tarea Eliminada', 'success' => true);
+        return $response;
     }
 }

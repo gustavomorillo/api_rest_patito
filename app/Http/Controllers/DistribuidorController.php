@@ -109,7 +109,24 @@ class DistribuidorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'email' => ['string', 'email', 'max:255', 'unique:distribuidores'],
+            'password' => ['required', 'string', 'min:6'],
+        ]);
+
+        if($validator->fails()){
+            $response = array('response' =>$validator->messages(), 'success' => false);
+            return $response;
+        } else {
+            $distribuidor = Distribuidor::find($id);
+            $distribuidor->email = $request->input('email');
+            $distribuidor->api_token = str_random(60);
+            $distribuidor->password = Hash::make($request->input('password'));
+            $distribuidor->save();
+            return response()->json($distribuidor);
+        }
+
+
     }
 
     /**
@@ -120,6 +137,9 @@ class DistribuidorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tarea = Distribuidor::find($id);
+        $tarea->delete();
+        $response = array('response' => 'Distribuidor Eliminado', 'success' => true);
+            return $response;
     }
 }
