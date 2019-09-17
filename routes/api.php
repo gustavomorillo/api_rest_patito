@@ -18,11 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-// Creo las rutas para Tarea y Distribuidor para el cliente que consuma la API
+// Creacion de las rutas para Tarea y Distribuidor para el consumo de la API
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('tarea', 'TareaController');
     Route::resource('distribuidor', 'DistribuidorController');
+    
 });
-
+Route::post('login', 'DistribuidorController@login');
 

@@ -16,6 +16,18 @@ class DistribuidorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function login(){ 
+        if(Auth::attempt(['email' => request('email'), 'password' => request('password')]) ){ 
+
+            $distribuidor = Auth::user(); 
+            $success['token'] = $distribuidor->api_token;
+            return response()->json(['success' => $success]); 
+        } 
+        else{ 
+            return response()->json(['error'=>'Unauthorised'], 401); 
+        } 
+    }
+
     public function index()
     {
         $distribuidores = Distribuidor::all();
