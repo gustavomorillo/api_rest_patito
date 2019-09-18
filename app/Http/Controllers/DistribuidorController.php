@@ -19,6 +19,12 @@ class DistribuidorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function login(){ 
+
+        // Para el login se valida email y password, 
+        // si son correctos se retorna el token para consumimir la API
+        
+
+
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')]) ){ 
 
             $distribuidor = Auth::user(); 
@@ -32,6 +38,9 @@ class DistribuidorController extends Controller
 
     public function index()
     {
+
+         // Listo todas los distribuidores y devuelvo en formato JSON
+
         $distribuidores = Distribuidor::all();
         return response()->json($distribuidores);
 
@@ -56,6 +65,12 @@ class DistribuidorController extends Controller
     public function store(Request $request)
     {
 
+        
+           // En esta funcion creo un distribuidor con email y password 
+           
+        // ademas de realizar las respectivas validaciones
+
+
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:distribuidores'],
             'password' => ['required', 'string', 'min:6'],
@@ -67,6 +82,8 @@ class DistribuidorController extends Controller
         } else {
             $distribuidor = new Distribuidor;
             $distribuidor->email = $request->input('email');
+
+            // Creo un token aleatorio de 60 caracteres para consumir la API
             $distribuidor->api_token = str_random(60);
             $distribuidor->password = Hash::make($request->input('password'));
             $distribuidor->save();
@@ -110,19 +127,23 @@ class DistribuidorController extends Controller
     public function update(Request $request, $id)
     {
 
+             // Funcion para actualizar los distribuidores, solo el campo de la contraseña es requerido
+
         $distribuidor = Auth::user();
 
         $validator = Validator::make($request->all(), [
             
+            // Valido que el email no exista en la base de datos
+            // valido que al ingresar el mismo email que tiene el distribuidor no se muestre que ya se encuentra registrado
 
             'email' => [
                 'email','max:255',
                 Rule::unique('distribuidores')->ignore($distribuidor->id),
             ],
-
-
             'password' => ['required', 'string', 'min:6'],
         ]);
+
+        // Si falla la validacion se envia mensaje de error
 
         if($validator->fails()){
             $response = array('response' =>$validator->messages(), 'success' => false);
@@ -147,6 +168,9 @@ class DistribuidorController extends Controller
      */
     public function destroy($id)
     {
+          // Elimino el distribuidor especificando el ID del mismo
+
+
         $tarea = Distribuidor::find($id);
         $tarea->delete();
         $response = array('response' => 'Distribuidor Eliminado', 'success' => true);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Tarea;
 use Validator;
+use App\Distribuidor;
 use Carbon\Carbon;
 class TareaController extends Controller
 {
@@ -16,6 +17,8 @@ class TareaController extends Controller
      */
     public function index()
     {
+
+        // Listo todas las tareas y devuelvo en formato JSON
         $tareas = Tarea::all();
         return response()->json($tareas);
     }
@@ -58,8 +61,11 @@ class TareaController extends Controller
         ]);
 
 
+        // Utilizo Carbon para definir la fecha y la hora
+
         $date = new Carbon();
 
+        // en caso de falla de la validacion ejecuto un mensaje de error:
         if($validator->fails()){
             $response = array('response' =>$validator->messages(), 'success' => false);
             return $response;
@@ -80,12 +86,7 @@ class TareaController extends Controller
 
        
     }
- // $nombre = $request->input('nombre');
 
-        // return Tarea::create([
-        //     'nombre' => $nombre,
-        //     'distribuidor_id' => Auth::guard('api')->id()
-        // ]);
     /**
      * Display the specified resource.
      *
@@ -95,8 +96,20 @@ class TareaController extends Controller
     public function show($id)
     {
 
-        $tarea = Tarea::find($id);
-        return response()->json($tarea);
+
+        // Busco distribuidor por ID
+
+        $distribuidor = Distribuidor::find($id);
+
+        // Por la relacion de uno a muchos que existe entre Distribuidor->tareas
+        // Listo todas las tareas para un distribuidor especifico
+
+
+        $tareas = $distribuidor->tareas;
+
+      
+
+        return response()->json($tareas);
 
     
     }
@@ -121,6 +134,10 @@ class TareaController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
+        // Funcion para actualizar las tareas, los campos no son requeridos
+
         $validator = Validator::make($request->all(), [
             
             'nombre' => ['string', 'min:6', 'max:255'],
@@ -134,12 +151,18 @@ class TareaController extends Controller
 
         ]);
 
+        // en caso de falla de la validacion ejecuto un mensaje de error:
+
         if($validator->fails()){
             $response = array('response' =>$validator->messages(), 'success' => false);
             return $response;
         } else {
            
             $tarea = Tarea::find($id);
+
+            
+            // ejecuto estas validaciones (if) en caso de que el usuario alla ingresado algun parametro
+            
 
             if($request->input('nombre')){
                 $tarea->nombre = $request->input('nombre');
@@ -176,6 +199,9 @@ class TareaController extends Controller
      */
     public function destroy($id)
     {
+
+        // Elimino la tarea especificando el ID de la tarea
+
         $tarea = Tarea::find($id);
         $tarea->delete();
         $response = array('response' => 'Tarea Eliminada', 'success' => true);
