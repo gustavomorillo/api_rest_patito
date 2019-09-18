@@ -30,7 +30,7 @@ class checkTime
             // y menor o igual a 61200 segundos permitir // RANGO de 8AM a 5PM hora bogota.
 
 
-        if($time_seconds >= 28800 && $time_seconds <= 61200){
+        if($time_seconds >= 28800 && $time_seconds <= 91200){
             return $next($request);
         } else {
             return response()->json('Fuera de horario');

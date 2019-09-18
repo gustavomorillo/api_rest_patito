@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Tarea;
 use Validator;
-
+use Carbon\Carbon;
 class TareaController extends Controller
 {
     /**
@@ -39,16 +39,39 @@ class TareaController extends Controller
     public function store(Request $request)
     {
         
+        
+           // En esta funcion creo una tarea con todos sus atributos 
+        // ademas de realizar las respectivas validaciones
+
+
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            
+            
+            'nombre' => ['required', 'string', 'min:6', 'max:255'],
+            'direccion' => ['required', 'string', 'max:255'],
+
+            'latitud' => ['required', 'integer'],
+            'longitud' => ['required', 'integer'],
+
+            'mercancia' => ['required', 'integer'],
+            'estado' => ['required', 'string', 'max:255'],
         ]);
+
+
+        $date = new Carbon();
 
         if($validator->fails()){
             $response = array('response' =>$validator->messages(), 'success' => false);
             return $response;
         } else {
             $tarea = new Tarea;
+            $tarea->fecha = $date;
             $tarea->nombre = $request->input('nombre');
+            $tarea->direccion = $request->input('direccion');
+            $tarea->latitud = $request->input('latitud');
+            $tarea->longitud = $request->input('longitud');
+            $tarea->mercancia = $request->input('mercancia');
+            $tarea->estado = $request->input('estado');
             $tarea->distribuidor_id = Auth::guard('api')->id();
             $tarea->save();
 
@@ -99,7 +122,16 @@ class TareaController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            
+            'nombre' => ['string', 'min:6', 'max:255'],
+            'direccion' => ['string', 'max:255'],
+
+            'latitud' => ['integer'],
+            'longitud' => ['integer'],
+
+            'mercancia' => ['integer'],
+            'estado' => ['string', 'max:255'],
+
         ]);
 
         if($validator->fails()){
@@ -108,7 +140,26 @@ class TareaController extends Controller
         } else {
            
             $tarea = Tarea::find($id);
-            $tarea->nombre = $request->input('nombre');
+
+            if($request->input('nombre')){
+                $tarea->nombre = $request->input('nombre');
+            }
+            if($request->input('direccion')){
+                $tarea->direccion = $request->input('direccion');
+            }
+            if($request->input('latitud')){
+                $tarea->latitud = $request->input('latitud');
+            }
+            if($request->input('longitud')){
+                $tarea->longitud = $request->input('longitud');
+            }
+            if($request->input('mercancia')){
+                $tarea->mercancia = $request->input('mercancia');
+            }
+            if($request->input('estado')){
+                $tarea->estado = $request->input('estado');
+            }
+            
             $tarea->distribuidor_id = Auth::guard('api')->id();
             $tarea->save();
 

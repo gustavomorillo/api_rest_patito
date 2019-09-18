@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
-
+use App\Tarea;
 class Distribuidor extends Eloquent implements Authenticatable
 {
     use AuthenticatableTrait;
@@ -19,6 +19,10 @@ class Distribuidor extends Eloquent implements Authenticatable
      *
      * @var array
      */
+
+         // Defino las variables que son creadas y editadas en el controlador Distribuidor
+
+
     protected $fillable = [
         'name', 'email', 'password', 'api_token'
     ];
@@ -44,5 +48,13 @@ class Distribuidor extends Eloquent implements Authenticatable
     ];
 
     protected $table =  'distribuidores';
+
+    // Relacion uno a muchos (distribuidor tiene muchas tareas)
+
+
+    public function tareas()
+    {
+        return $this->hasMany('App\Tarea');
+    }
 
 }

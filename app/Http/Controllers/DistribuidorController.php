@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Carbon\Carbon;
 use Validator;
 use App\Distribuidor;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -53,8 +55,6 @@ class DistribuidorController extends Controller
      */
     public function store(Request $request)
     {
-
-
 
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:distribuidores'],
@@ -109,8 +109,18 @@ class DistribuidorController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $distribuidor = Auth::user();
+
         $validator = Validator::make($request->all(), [
-            'email' => ['string', 'email', 'max:255', 'unique:distribuidores'],
+            
+
+            'email' => [
+                'email','max:255',
+                Rule::unique('distribuidores')->ignore($distribuidor->id),
+            ],
+
+
             'password' => ['required', 'string', 'min:6'],
         ]);
 

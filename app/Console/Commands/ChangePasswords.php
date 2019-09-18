@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
+
 
 class ChangePasswords extends Command
 {
@@ -45,29 +45,34 @@ class ChangePasswords extends Command
      */
     public function handle()
     {
-       
-        $str_time = "23:12:95";
 
+       // Se Desarrolla un comando de laravel 
+     
 
-            $dt = Carbon::now();
-            // $str_time = $dt->format('H:i:s');
-            
+        // Listo todos los distribuidores para ejecutar el comando que enviara la nueva contraseña a los distribuidor
 
-            // 8am son 28800 segundos
-            // 5pm son 61200 segundos
+         $distribuidores = Distribuidor::all();
 
-            // si la hora actual es mayor o igual a 28800 segundos permitir 
-            // y menor o igual a 61200 segundos permitir // RANGO de 8AM a 5PM hora bogota.
+         // Realizo un loop foreach para obtener informacion de cada distribuidor
 
+         foreach ($distribuidores as $distribuidor){
 
-            $str_time = $dt->format('H:i:s');
-    
-            $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $str_time);
-            sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-            $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
-            
-            $this->info($time_seconds);    
-            
+            $BuscarDistribuidor = Distribuidor::find($distribuidor['id']);
+
+             // cambie aleatoriamente las contraseñas de cada distribuidor
+
+            $newPassword = str_random(8);
+            $data = ['password' => $newPassword];
+            $hashPassword = Hash::make($newPassword);
+            $BuscarDistribuidor->password = $hashPassword;
+            $BuscarDistribuidor->save();
+
+              // En el envío de los correos electrónicos se debe usar una cola 
+              // y le envié a cada uno un correo con la nueva contraseña // 
+            Mail::to($BuscarDistribuidor['email'])->send(new SendEmail($data));
+            $this->info("Changed password " . $BuscarDistribuidor['email']);
+        }
         
     }
+    
 }

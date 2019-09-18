@@ -15,7 +15,7 @@ class CreateTareasTable extends Migration
     {
         Schema::create('tareas', function (Blueprint $table) {   
             $table->integer('distribuidor_id');
-            $table->date('fecha');
+            $table->string('fecha');
             $table->string('nombre');
             $table->string('direccion');
             $table->integer('latitud');
