@@ -28,3 +28,6 @@ Route::group(['middleware' => ['auth:api', 'checkTime']], function () {
 });
 Route::post('login', 'DistribuidorController@login')->middleware('checkTime');
 
+Route::post('asignacion', 'DistribuidorController@DistribuidorTareasXDia')->middleware('checkTime');
+
+

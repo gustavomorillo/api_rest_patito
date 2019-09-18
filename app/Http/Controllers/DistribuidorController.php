@@ -20,21 +20,52 @@ class DistribuidorController extends Controller
      */
     public function login(){ 
 
-        // Para el login se valida email y password, 
-        // si son correctos se retorna el token para consumimir la API
+       
+
         
 
-
+        // Para el login se valida email y password, 
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')]) ){ 
 
             $distribuidor = Auth::user(); 
             $success['token'] = $distribuidor->api_token;
+
+           // si son correctos se retorna el token para consumimir la API
+
             return response()->json(['success' => $success]); 
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
         } 
     }
+
+
+    public function DistribuidorTareasXDia(Request $request)
+    {
+
+         // Listo todas los distribuidores y devuelvo en formato JSON
+       
+
+        
+        $distribuidores = Distribuidor::all();
+        $asig = [];
+
+        foreach ($distribuidores as $distribuidor){
+          
+            $lists = [];
+            foreach($distribuidores as $key => $value)
+            {
+                    $lists[] = ['Asignaciones' => $value];
+            }
+         
+        }
+        return response()->json($lists);
+
+        
+
+
+    }
+
 
     public function index()
     {

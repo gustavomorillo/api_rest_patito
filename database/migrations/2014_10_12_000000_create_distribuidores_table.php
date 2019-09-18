@@ -20,6 +20,11 @@ class CreateDistribuidoresTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('api_token', 60)->unique();
             $table->string('password');
+            $table->string('lunes');
+            $table->string('martes');
+            $table->string('miercoles');
+            $table->string('jueves');
+            $table->string('viernes');
             $table->rememberToken();
             $table->timestamps();
         });

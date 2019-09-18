@@ -25,6 +25,11 @@ class DistribuidorSeeder extends Seeder
             'email' => 'Usuario' . $i . '@gmail.com',
             'password' => $hashPassword,
             'api_token' => $api_token,
+            'lunes' => '10',
+            'martes' => '20',
+            'miercoles' => '30',
+            'jueves' => '40',
+            'viernes' => '50'
             
         ]);
             //Creo 1 distribuidor en la base de datos por facilidad asigno pw: 123456
@@ -34,6 +39,11 @@ class DistribuidorSeeder extends Seeder
 
             'email' => '123456' . '@gmail.com',
             'password' => Hash::make('123456'),
+            'lunes' => '10',
+            'martes' => '20',
+            'miercoles' => '30',
+            'jueves' => '40',
+            'viernes' => '50',
 
              // El distribuidor le asigno un api_token de 123456
             'api_token' => '123456',
