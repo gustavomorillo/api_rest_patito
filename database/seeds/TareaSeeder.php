@@ -13,6 +13,8 @@ class TareaSeeder extends Seeder
     public function run()
     {
 
+
+        // Creo 3 tareas en la base de Datos para pruebas
         for( $i = 0; $i<3; $i++ ) {
             $time = new Carbon();
                 DB::table('tareas')->insert([

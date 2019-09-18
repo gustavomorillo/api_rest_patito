@@ -12,6 +12,8 @@ class DistribuidorSeeder extends Seeder
     public function run()
     {
 
+        //Creo 2 distribuidores en la base de datos por facilidad asigno pw: 123456
+
         for( $i = 0; $i<2; $i++ ) {
 
             $newPassword = '123456';
@@ -25,12 +27,15 @@ class DistribuidorSeeder extends Seeder
             'api_token' => $api_token,
             
         ]);
-
+            //Creo 1 distribuidor en la base de datos por facilidad asigno pw: 123456
+            // El distribuidor le asigno un api_token de 123456
         }
         DB::table('distribuidores')->insert([
 
             'email' => '123456' . '@gmail.com',
             'password' => Hash::make('123456'),
+
+             // El distribuidor le asigno un api_token de 123456
             'api_token' => '123456',
             
         ]);
